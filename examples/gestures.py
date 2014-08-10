@@ -29,6 +29,7 @@ when they're recognized.
 """
 
 from openni import *
+import sys
 
 try:
 

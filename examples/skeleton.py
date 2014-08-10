@@ -65,6 +65,36 @@ skel_cap.set_profile(SKEL_PROFILE_ALL)
 ctx.start_generating_all()
 print "0/4 Starting to detect users. Press Ctrl-C to exit."
 
+joints =  {'SKEL_HEAD': 0
+           'SKEL_LEFT_ANKLE': 0,
+           'SKEL_LEFT_COLLAR': 0,
+           'SKEL_LEFT_ELBOW': 0,
+           'SKEL_LEFT_FINGERTIP': 0,
+           'SKEL_LEFT_FOOT': 0,
+           'SKEL_LEFT_HAND': 0,
+           'SKEL_LEFT_HIP': 0,
+           'SKEL_LEFT_KNEE': 0,
+           'SKEL_LEFT_SHOULDER': 0,
+           'SKEL_LEFT_WRIST': 0,
+           'SKEL_NECK': 0,
+           'SKEL_PROFILE_ALL': 0,
+           'SKEL_PROFILE_HEAD_HANDS': 0,
+           'SKEL_PROFILE_LOWER': 0,
+           'SKEL_PROFILE_NONE': 0,
+           'SKEL_PROFILE_UPPER': 0,
+           'SKEL_RIGHT_ANKLE': 0,
+           'SKEL_RIGHT_COLLAR': 0,
+           'SKEL_RIGHT_ELBOW': 0,
+           'SKEL_RIGHT_FINGERTIP': 0,
+           'SKEL_RIGHT_FOOT': 0,
+           'SKEL_RIGHT_HAND': 0,
+           'SKEL_RIGHT_HIP': 0,
+           'SKEL_RIGHT_KNEE': 0,
+           'SKEL_RIGHT_SHOULDER': 0,
+           'SKEL_RIGHT_WRIST': 0,
+           'SKEL_TORSO': 0,
+           'SKEL_WAIST': 0}
+
 while True:
     # Update to next frame
     ctx.wait_and_update_all()
@@ -72,6 +102,6 @@ while True:
     # Extract head position of each tracked user
     for id in user.users:
         if skel_cap.is_tracking(id):
-            head = skel_cap.get_joint_position(id, SKEL_HEAD)
-            print "  {}: head at ({loc[0]}, {loc[1]}, {loc[2]}) [{conf}]" .format(id, loc=head.point, conf=head.confidence)
-
+            for joint in joints:
+                joints[joint] = skel_cap.get_joint_position(id, joint).point
+            print joints

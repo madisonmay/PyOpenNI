@@ -12,6 +12,7 @@ It will replay the results of the recorded data, in a loop.
 
 
 from openni import *
+import numpy as np
 
 ctx = Context()
 ctx.init()
@@ -22,20 +23,17 @@ ctx.open_file_recording("tempRec.oni")
 ctx.start_generating_all()
 depth = ctx.find_existing_node(NODE_TYPE_DEPTH)
 
+prev = -1
 
-while True:
+while depth.frame_id > prev:
+
+    prev = depth.frame_id
+    
     # Update to next frame
     nRetVal = ctx.wait_one_update_all(depth)
 
-    depthMap = depth.map
+    depth_map = depth.map
 
-    # Get the coordinates of the middle pixel
-    x = depthMap.width / 2
-    y = depthMap.height / 2
-    
-    # Get the pixel at these coordinates
-    pixel = depthMap[x,y]
-
-    print "The middle pixel is %d millimeters away." % pixel
-
-
+    depth_data = np.array(depth.get_tuple_depth_map())
+    depth_data = depth_data.reshape((depth_map.width, depth_map.height))
+    print depth_data
